@@ -40,7 +40,7 @@ switch($_REQUEST["action"])
 		$link = mysql_pconnect($staff_hostname.":".$staff_port, $staff_username, $staff_password);
 		mysql_select_db($staff_database, $link);
 		
-		$query = sprintf("delete from staff where STAFF_ID = '%s'", mysql_real_escape_string($_REQUEST["Id"], $link));
+		$query = sprintf("delete from staff where STAFF_ID = '%s'", mysql_real_escape_string($_REQUEST["id"], $link));
 		
 		mysql_query($query, $link);
 		break;

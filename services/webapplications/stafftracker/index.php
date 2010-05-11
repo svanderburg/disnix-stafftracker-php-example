@@ -43,8 +43,8 @@ require_once("config.inc.php");
 						<td><?php print($row["LastName"]); ?></td>
 						<td><?php print($row["Room"]); ?></td>
 						<td><?php print($row["ipAddress"]); ?></td>
-						<td><a href="editstaff.php?id=<?php print($row["STAFF_ID"]); ?>"></a></td>
-						<td><a href="modifystaff.php?action=delete&amp;id=<?php print($row["STAFF_ID"]); ?>"></a></td>
+						<td><a href="editstaff.php?id=<?php print($row["STAFF_ID"]); ?>">Edit</a></td>
+						<td><a href="modifystaff.php?action=delete&amp;id=<?php print($row["STAFF_ID"]); ?>">Delete</a></td>
 					</tr>
 					<?php			
 				}

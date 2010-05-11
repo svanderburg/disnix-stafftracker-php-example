@@ -34,6 +34,6 @@ rec {
     dependsOn = {
       inherit rooms staff zipcodes;
     };
-    type = "php-webapplication";
+    type = "apache-webapplication";
   };
 }

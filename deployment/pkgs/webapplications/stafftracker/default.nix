@@ -34,7 +34,7 @@ stdenv.mkDerivation {
   '';
   
   installPhase = ''
-    ensureDir $out
-    cp -av * $out
+    ensureDir $out/webapps/stafftracker
+    cp -av * $out/webapps/stafftracker
   '';
 }

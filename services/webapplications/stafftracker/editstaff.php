@@ -35,7 +35,7 @@ require_once("config.inc.php");
 				    mysql_real_escape_string($_REQUEST["id"], $staff_link));
 				$staff_result = mysql_query($query, $staff_link);
 				
-				$staff_row = mysql_fetch_asoc($staff_result);
+				$staff_row = mysql_fetch_assoc($staff_result);
 			}
 			?>
 			<table>
