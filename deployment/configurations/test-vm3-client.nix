@@ -55,4 +55,8 @@
       pkgs.firefox
     ];
   };
+  
+  deployment = {
+    targetHost = "test3";
+  };
 }

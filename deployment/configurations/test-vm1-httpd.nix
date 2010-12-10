@@ -45,4 +45,8 @@
       pkgs.lynx
     ];
   };
+  
+  deployment = {
+    targetHost = "test1";
+  };
 }
