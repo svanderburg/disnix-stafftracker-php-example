@@ -1,27 +1,27 @@
-{distribution, system}:
+{distribution, system, pkgs}:
 
-let pkgs = import ../top-level/all-packages.nix { inherit system; };
+let customPkgs = import ../top-level/all-packages.nix { inherit system pkgs; };
 in
 rec {
 ### Databases
   
   rooms = {
     name = "rooms";
-    pkg = pkgs.rooms;
+    pkg = customPkgs.rooms;
     dependsOn = {};
     type = "mysql-database";
   };
   
   staff = {
     name = "staff";
-    pkg = pkgs.staff;
+    pkg = customPkgs.staff;
     dependsOn = {};
     type = "mysql-database";
   };
   
   zipcodes = {
     name = "zipcodes";
-    pkg = pkgs.zipcodes;
+    pkg = customPkgs.zipcodes;
     dependsOn = {};
     type = "mysql-database";
   };
@@ -30,7 +30,7 @@ rec {
 
   stafftracker = {
     name = "stafftracker";
-    pkg = pkgs.stafftracker;
+    pkg = customPkgs.stafftracker;
     dependsOn = {
       inherit rooms staff zipcodes;
     };
