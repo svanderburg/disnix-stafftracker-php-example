@@ -1,20 +1,21 @@
 { nixpkgs ? /etc/nixos/nixpkgs
 , nixos ? /etc/nixos/nixos
-, system ? builtins.currentSystem
 }:
 
 let
-  pkgs = import nixpkgs { inherit system; };
   
-  disnixos = import "${pkgs.disnixos}/share/disnixos/testing.nix" {
-    inherit nixpkgs nixos system;
-  };
-
   jobs = rec {
     tarball =
       { php_mysql ? {outPath = ./.; rev = 1234;}
       , officialRelease ? false}:
     
+      let
+        pkgs = import nixpkgs {};
+  
+        disnixos = import "${pkgs.disnixos}/share/disnixos/testing.nix" {
+          inherit nixpkgs nixos;
+        };
+      in
       disnixos.sourceTarball {
         name = "php-mysql";
 	version = builtins.readFile ./version;
@@ -23,8 +24,17 @@ let
       };
       
     build =
-      { tarball ? jobs.tarball {} }:
+      { tarball ? jobs.tarball {}
+      , system ? "x86_64-linux"
+      }:
       
+      let
+        pkgs = import nixpkgs { inherit system; };
+  
+        disnixos = import "${pkgs.disnixos}/share/disnixos/testing.nix" {
+          inherit nixpkgs nixos system;
+        };
+      in
       disnixos.buildManifest {
         name = "php-mysql";
 	version = builtins.readFile ./version;
@@ -36,10 +46,17 @@ let
             
     tests = 
 
+      let
+        pkgs = import nixpkgs {};
+  
+        disnixos = import "${pkgs.disnixos}/share/disnixos/testing.nix" {
+          inherit nixpkgs nixos;
+        };
+      in
       disnixos.disnixTest {
         name = "php-mysql";        
         tarball = tarball {};
-        manifest = build {};
+        manifest = build { system = "x86_64-linux"; };
 	networkFile = "deployment/DistributedDeployment/network.nix";
 	testScript =
 	  ''
