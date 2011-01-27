@@ -1,25 +1,23 @@
 {system, pkgs}:
 
-with pkgs;
-
 rec {
 ### Databases
 
   rooms = import ../pkgs/databases/rooms {
-    inherit stdenv;
+    inherit (pkgs) stdenv;
   };
   
   staff = import ../pkgs/databases/staff {
-    inherit stdenv;
+    inherit (pkgs) stdenv;
   };
   
   zipcodes = import ../pkgs/databases/zipcodes {
-    inherit stdenv;
+    inherit (pkgs) stdenv;
   };
 
 ### Web applications
 
   stafftracker = import ../pkgs/webapplications/stafftracker {
-    inherit stdenv;
+    inherit (pkgs) stdenv;
   };
 }
