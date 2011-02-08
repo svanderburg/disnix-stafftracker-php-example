@@ -1,0 +1,14 @@
+<chapter xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xml:id="chap-introduction">
+
+	<title>Introduction</title>
+
+	<para>
+		This is an example case representing a system to manage staff of a university
+		department. The system uses data stored in several databases, such as a database
+		to store zipcodes, room numbers and staff members. 
+		A web application front-end is provided for end-users to retrieve and edit
+		staff members.
+	</para>
+</chapter>
