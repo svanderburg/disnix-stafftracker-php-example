@@ -1,12 +1,12 @@
-{ nixpkgs ? /etc/nixos/nixpkgs
-, nixos ? /etc/nixos/nixos
+{ nixpkgs ? <nixpkgs>
+, nixos ? <nixos>
 }:
 
 let
   
   jobs = rec {
     tarball =
-      { php_mysql ? {outPath = ./.; rev = 1234;}
+      { disnix_stafftracker_php_example ? {outPath = ./.; rev = 1234;}
       , officialRelease ? false}:
     
       let
@@ -17,9 +17,9 @@ let
         };
       in
       disnixos.sourceTarball {
-        name = "php-mysql";
-	version = builtins.readFile ./version;
-	src = php_mysql;
+        name = "disnix-stafftracker-php-example-tarball";
+        version = builtins.readFile ./version;
+        src = disnix_stafftracker_php_example;
         inherit officialRelease;
       };
       
@@ -29,23 +29,23 @@ let
       with import nixpkgs {};
       
       releaseTools.nixBuild {
-        name = "php-mysql-doc";
-	version = builtins.readFile ./version;
-	src = tarball;
-	buildInputs = [ libxml2 libxslt dblatex tetex ];
-	
-	buildPhase = ''
-	  cd doc
-	  make docbookrng=${docbook5}/xml/rng/docbook docbookxsl=${docbook5_xsl}/xml/xsl/docbook
-	'';
-	
-	checkPhase = "true";
-	
-	installPhase = ''
-	  make DESTDIR=$out install
-	 
-	  echo "doc manual $out/share/doc/php-mysql/manual" >> $out/nix-support/hydra-build-products
-	'';
+        name = "disnix-stafftracker-php-example-doc";
+        version = builtins.readFile ./version;
+        src = tarball;
+        buildInputs = [ libxml2 libxslt dblatex tetex ];
+        
+        buildPhase = ''
+          cd doc
+          make docbookrng=${docbook5}/xml/rng/docbook docbookxsl=${docbook5_xsl}/xml/xsl/docbook
+        '';
+        
+        checkPhase = "true";
+        
+        installPhase = ''
+          make DESTDIR=$out install
+         
+          echo "doc manual $out/share/doc/php-mysql/manual" >> $out/nix-support/hydra-build-products
+        '';
       };
       
     build =
@@ -61,12 +61,12 @@ let
         };
       in
       disnixos.buildManifest {
-        name = "php-mysql";
-	version = builtins.readFile ./version;
-	inherit tarball;
-	servicesFile = "deployment/DistributedDeployment/services.nix";
-	networkFile = "deployment/DistributedDeployment/network.nix";
-	distributionFile = "deployment/DistributedDeployment/distribution.nix";
+        name = "disnix-stafftracker-php-example";
+        version = builtins.readFile ./version;
+        inherit tarball;
+        servicesFile = "deployment/DistributedDeployment/services.nix";
+        networkFile = "deployment/DistributedDeployment/network.nix";
+        distributionFile = "deployment/DistributedDeployment/distribution.nix";
       };
             
     tests = 
@@ -79,32 +79,32 @@ let
         };
       in
       disnixos.disnixTest {
-        name = "php-mysql";        
+        name = "disnix-stafftracker-php-example-tests";
         tarball = tarball {};
         manifest = build { system = "x86_64-linux"; };
-	networkFile = "deployment/DistributedDeployment/network.nix";
-	testScript =
-	  ''
-	    # Wait for a while and capture the output of the entry page
-	    my $result = $test3->mustSucceed("sleep 30; curl --fail http://test1/stafftracker/index.php");
-	    
-	    # The entry page should contain my name :-)
-	    
-	    if ($result =~ /Sander/) {
-	        print "Entry page contains Sander!\n";
-	    }
-	    else {
-	        die "Entry page should contain Sander!\n";
-	    }
-	    
-	    # Start Firefox and take a screenshot
-	    
-	    $test3->mustSucceed("firefox http://test1/stafftracker/index.php &");
-	    $test3->waitForWindow(qr/Aurora/);
-	    $test3->mustSucceed("sleep 30");  
-	    $test3->screenshot("screen");
-	  '';
-      };              
+        networkFile = "deployment/DistributedDeployment/network.nix";
+        testScript =
+          ''
+            # Wait for a while and capture the output of the entry page
+            my $result = $test3->mustSucceed("sleep 30; curl --fail http://test1/stafftracker/index.php");
+            
+            # The entry page should contain my name :-)
+            
+            if ($result =~ /Sander/) {
+                print "Entry page contains Sander!\n";
+            }
+            else {
+                die "Entry page should contain Sander!\n";
+            }
+            
+            # Start Firefox and take a screenshot
+            
+            $test3->mustSucceed("firefox http://test1/stafftracker/index.php &");
+            $test3->waitForWindow(qr/Nightly/);
+            $test3->mustSucceed("sleep 30");
+            $test3->screenshot("screen");
+          '';
+      };
   };
 in
 jobs

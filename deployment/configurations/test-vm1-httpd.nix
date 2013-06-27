@@ -9,16 +9,6 @@
     };
   };
 
-  fileSystems = [
-    { mountPoint = "/";
-      device = "/dev/sda2";
-    }
-  ];
-
-  swapDevices = [
-    { device = "/dev/sda1"; }
-  ];
-  
   services = {
     openssh = {
       enable = true;
@@ -44,5 +34,5 @@
       pkgs.subversion
       pkgs.lynx
     ];
-  };  
+  };
 }

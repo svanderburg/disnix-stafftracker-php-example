@@ -15,14 +15,14 @@
       
       displayManager = {
         slim.enable = false;
-	auto.enable = true;
+        auto.enable = true;
       };
       
       windowManager = {
         default = "icewm";
         icewm = {
-	  enable = true;
-	};
+          enable = true;
+        };
       };
       
       desktopManager.default = "none";
