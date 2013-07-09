@@ -14,10 +14,6 @@
       enable = true;
     };
     
-    disnix = {
-      enable = true;
-    };
-
     httpd = {
       enable = true;
       documentRoot = "/var/www";

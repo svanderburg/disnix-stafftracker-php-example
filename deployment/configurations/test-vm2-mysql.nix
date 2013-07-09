@@ -6,10 +6,6 @@
       enable = true;
     };
 
-    disnix = {
-      enable = true;
-    };
-
     mysql = {
       enable = true;
       rootPassword = ./mysqlpw;

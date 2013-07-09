@@ -6,10 +6,6 @@
       enable = true;
     };
     
-    disnix = {
-      enable = true;
-    };
-    
     xserver = {
       enable = true;
       
