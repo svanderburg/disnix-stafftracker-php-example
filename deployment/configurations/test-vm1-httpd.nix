@@ -1,14 +1,6 @@
 {pkgs, ...}:
 
 {
-  boot = {
-    loader = {
-      grub = {
-        device = "/dev/sda";
-      };
-    };
-  };
-
   services = {
     disnix = {
       enable = true;

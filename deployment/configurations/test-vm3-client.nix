@@ -36,5 +36,5 @@
       pkgs.lynx
       pkgs.firefox
     ];
-  };  
+  };
 }
