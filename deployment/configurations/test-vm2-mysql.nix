@@ -14,6 +14,7 @@
       enable = true;
       rootPassword = ./mysqlpw;
       initialScript = ./mysqlscript;
+      package = pkgs.mysql;
     };
   };
   
