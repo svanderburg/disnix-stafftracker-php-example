@@ -20,6 +20,8 @@
     };
   };
   
+  networking.firewall.allowedTCPPorts = [ 80 ];
+  
   environment = {
     systemPackages = [
       pkgs.mc
