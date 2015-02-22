@@ -1,23 +1,20 @@
 {system, pkgs}:
 
-rec {
-### Databases
-
-  rooms = import ../pkgs/databases/rooms {
-    inherit (pkgs) stdenv;
-  };
+let
+  callPackage = pkgs.lib.callPackageWith (pkgs // self);
   
-  staff = import ../pkgs/databases/staff {
-    inherit (pkgs) stdenv;
-  };
+  self = {
+  ### Databases
+
+    rooms = callPackage ../pkgs/databases/rooms { };
   
-  zipcodes = import ../pkgs/databases/zipcodes {
-    inherit (pkgs) stdenv;
-  };
+    staff = callPackage ../pkgs/databases/staff { };
+  
+    zipcodes = callPackage ../pkgs/databases/zipcodes { };
 
-### Web applications
+  ### Web applications
 
-  stafftracker = import ../pkgs/webapplications/stafftracker {
-    inherit (pkgs) stdenv;
+    stafftracker = callPackage ../pkgs/webapplications/stafftracker { };
   };
-}
+in
+self
