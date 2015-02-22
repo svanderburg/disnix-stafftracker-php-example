@@ -13,7 +13,7 @@ The above figure shows the architecture of this example, consisting of two
 layers. The data layer contains various MySQL databases storing data sets. The
 presentation layer contains a web application front-end which can be used by end
 users to manage staff of a university. All the components in the figure are
-*distributable* components (or *services*) which can deployed on various machines
+*distributable* components (or *services*) which can deployed to various machines
 in the network.
 
 Usage
@@ -42,8 +42,8 @@ The system can be deployed by running the following command:
 
     $ disnix-env -s services.nix -i infrastructure.nix -d distribution.nix
 
-Deployment using DisnixOS in a network of NixOS machines
---------------------------------------------------------
+Hybrid NixOS deployment of infrastructure and services using DisnixOS
+---------------------------------------------------------------------
 For this scenario you need to install a network of NixOS machines, running the
 Disnix service. This can be done by enabling the following configuration
 option in each `/etc/nixos/configuration.nix` file:
