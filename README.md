@@ -42,7 +42,7 @@ The system can be deployed by running the following command:
 
     $ disnix-env -s services.nix -i infrastructure.nix -d distribution.nix
 
-Hybrid NixOS deployment of infrastructure and services using DisnixOS
+Hybrid deployment of NixOS infrastructure and services using DisnixOS
 ---------------------------------------------------------------------
 For this scenario you need to install a network of NixOS machines, running the
 Disnix service. This can be done by enabling the following configuration
