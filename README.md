@@ -84,8 +84,6 @@ The services can be deployed by running the following commands:
 
 Running the system
 ==================
-![Stafftracker web front-end](doc/browser.png)
-
 After the system has been deployed, open a web browser and type the following URL:
 
     http://test1/stafftracker/index.php
