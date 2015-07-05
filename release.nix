@@ -52,6 +52,7 @@ let
         inherit tarball;
         manifest = builtins.getAttr (builtins.currentSystem) build;
         networkFile = "deployment/DistributedDeployment/network.nix";
+        dysnomiaStateDir = ./tests/state;
         testScript =
           ''
             # Wait for a while and capture the output of the entry page

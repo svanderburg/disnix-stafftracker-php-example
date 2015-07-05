@@ -17,6 +17,7 @@ rec {
     pkg = customPkgs.staff;
     dependsOn = {};
     type = "mysql-database";
+    deployState = true;
   };
   
   zipcodes = {
