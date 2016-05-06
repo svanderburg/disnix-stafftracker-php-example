@@ -10,25 +10,25 @@ stdenv.mkDerivation {
     cat > config.inc.php <<EOF
     <?php
     /* Room database properties */
-    \$room_hostname = "${rooms.target.hostname}";
-    \$room_port = ${toString (rooms.target.mysqlPort)};
+    \$room_hostname = "${rooms.target.properties.hostname}";
+    \$room_port = ${toString (rooms.target.container.mysqlPort)};
     \$room_database = "${rooms.name}";
-    \$room_username = "${rooms.target.mysqlUsername}";
-    \$room_password = "${rooms.target.mysqlPassword}";
+    \$room_username = "${rooms.target.container.mysqlUsername}";
+    \$room_password = "${rooms.target.container.mysqlPassword}";
     
     /* Staff database properties */
-    \$staff_hostname = "${staff.target.hostname}";
-    \$staff_port = ${toString (staff.target.mysqlPort)};
+    \$staff_hostname = "${staff.target.properties.hostname}";
+    \$staff_port = ${toString (staff.target.container.mysqlPort)};
     \$staff_database = "${staff.name}";
-    \$staff_username = "${staff.target.mysqlUsername}";
-    \$staff_password = "${staff.target.mysqlPassword}";
+    \$staff_username = "${staff.target.container.mysqlUsername}";
+    \$staff_password = "${staff.target.container.mysqlPassword}";
     
     /* Zipcode database properties */
-    \$zipcode_hostname = "${zipcodes.target.hostname}";
-    \$zipcode_port = ${toString (zipcodes.target.mysqlPort)};
+    \$zipcode_hostname = "${zipcodes.target.properties.hostname}";
+    \$zipcode_port = ${toString (zipcodes.target.container.mysqlPort)};
     \$zipcode_database = "${zipcodes.name}";
-    \$zipcode_username = "${zipcodes.target.mysqlUsername}";
-    \$zipcode_password = "${zipcodes.target.mysqlPassword}";
+    \$zipcode_username = "${zipcodes.target.container.mysqlUsername}";
+    \$zipcode_password = "${zipcodes.target.container.mysqlPassword}";
     ?>
     EOF
   '';
