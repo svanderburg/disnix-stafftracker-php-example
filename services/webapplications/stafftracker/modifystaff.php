@@ -1,48 +1,29 @@
 <?php
 require_once("config.inc.php");
 
+$dbh = new PDO("mysql:host=".$staff_hostname.";port=".$staff_port.";dbname=".$staff_database, $staff_username, $staff_password, array(
+	PDO::ATTR_PERSISTENT => true
+));
+
 switch($_REQUEST["action"])
 {
 	case "insert":
-		$link = mysql_pconnect($staff_hostname.":".$staff_port, $staff_username, $staff_password);
-		mysql_select_db($staff_database, $link);
-		
-		$query = sprintf("insert into staff values ('%s', '%s', '%s', '%s', '%s')",
-		    mysql_real_escape_string($_REQUEST["Id"], $link),
-		    mysql_real_escape_string($_REQUEST["Name"], $link),
-		    mysql_real_escape_string($_REQUEST["LastName"], $link),
-		    mysql_real_escape_string($_REQUEST["Room"], $link),
-		    mysql_real_escape_string($_REQUEST["ipAddress"], $link));
-		
-		mysql_query($query, $link);
+		$stmt = $dbh->prepare("insert into staff values (?, ?, ?, ?, ?)");
+		$stmt->execute(array($_REQUEST["Id"], $_REQUEST["Name"], $_REQUEST["LastName"], $_REQUEST["Room"], $_REQUEST["ipAddress"]));
 		break;
 	case "update":
-		$link = mysql_pconnect($staff_hostname.":".$staff_port, $staff_username, $staff_password);
-		mysql_select_db($staff_database, $link);
-		
-		$query = sprintf("update staff set ".
-		    "STAFF_ID = '%s', ".
-		    "Name = '%s', ".
-		    "LastName = '%s', ".
-		    "Room = '%s', ".
-		    "ipAddress = '%s' ".
-		    "where STAFF_ID = '%s'",
-		    mysql_real_escape_string($_REQUEST["Id"], $link),
-		    mysql_real_escape_string($_REQUEST["Name"], $link),
-		    mysql_real_escape_string($_REQUEST["LastName"], $link),
-		    mysql_real_escape_string($_REQUEST["Room"], $link),
-		    mysql_real_escape_string($_REQUEST["ipAddress"], $link),
-		    mysql_real_escape_string($_REQUEST["old_Id"], $link));
-		
-		mysql_query($query, $link);
+		$stmt = $dbh->prepare("update staff set ".
+		    "STAFF_ID = ?, ".
+		    "Name = ?, ".
+		    "LastName = ?, ".
+		    "Room = ?, ".
+		    "ipAddress = ? ".
+		    "where STAFF_ID = ?");
+		$stmt->execute(array($_REQUEST["Id"], $_REQUEST["Name"], $_REQUEST["LastName"], $_REQUEST["Room"], $_REQUEST["ipAddress"], $_REQUEST["old_Id"]));
 		break;
 	case "delete":
-		$link = mysql_pconnect($staff_hostname.":".$staff_port, $staff_username, $staff_password);
-		mysql_select_db($staff_database, $link);
-		
-		$query = sprintf("delete from staff where STAFF_ID = '%s'", mysql_real_escape_string($_REQUEST["id"], $link));
-		
-		mysql_query($query, $link);
+		$stmt = $dbh->prepare("delete from staff where STAFF_ID = ?");
+		$stmt->execute(array($_REQUEST["id"]));
 		break;
 }
 

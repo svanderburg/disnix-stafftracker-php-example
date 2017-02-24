@@ -15,7 +15,7 @@
       documentRoot = "/var/www";
       adminAddr = "admin@localhost";
       extraModules = [
-        { name = "php5"; path = "${pkgs.php}/modules/libphp5.so"; }
+        { name = "php7"; path = "${pkgs.php}/modules/libphp7.so"; }
       ];
     };
   };

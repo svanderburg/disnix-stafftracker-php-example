@@ -20,13 +20,13 @@ require_once("config.inc.php");
 				<th>IP address</th>
 			</tr>
 			<?php
-			$link = mysql_pconnect($staff_hostname.":".$staff_port, $staff_username, $staff_password);
-			mysql_select_db($staff_database, $link);
+			$dbh = new PDO("mysql:host=".$staff_hostname.";port=".$staff_port.";dbname=".$staff_database, $staff_username, $staff_password, array(
+				PDO::ATTR_PERSISTENT => true
+			));
 			
-			$query = "select STAFF_ID, Name, LastName, Room, ipAddress from staff order by STAFF_ID";
-			$result = mysql_query($query, $link);
+			$stmt = $dbh->prepare("select STAFF_ID, Name, LastName, Room, ipAddress from staff order by STAFF_ID");
 			
-			if(!$result)
+			if(!$stmt->execute())
 			{
 				?>
 				<tr><td colspan="7">Error: cannot connect to the staff database!</td></tr>
@@ -34,7 +34,7 @@ require_once("config.inc.php");
 			}
 			else
 			{
-				while($row = mysql_fetch_assoc($result))
+				while($row = $stmt->fetch())
 				{
 					?>
 					<tr>
@@ -46,7 +46,7 @@ require_once("config.inc.php");
 						<td><a href="editstaff.php?id=<?php print($row["STAFF_ID"]); ?>">Edit</a></td>
 						<td><a href="modifystaff.php?action=delete&amp;id=<?php print($row["STAFF_ID"]); ?>">Delete</a></td>
 					</tr>
-					<?php			
+					<?php
 				}
 			}
 			?>

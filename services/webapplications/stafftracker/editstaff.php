@@ -19,7 +19,7 @@ require_once("config.inc.php");
 					<input type="hidden" name="old_Id" value="<?php print($_REQUEST["id"]); ?>">
 					<?php
 				}
-				?>				
+				?>
 			</p>
 			<?php
 			if($_REQUEST["id"] == "")
@@ -28,14 +28,14 @@ require_once("config.inc.php");
 			}
 			else
 			{
-				$staff_link = mysql_pconnect($staff_hostname.":".$staff_port, $staff_username, $staff_password);				
-				mysql_select_db($staff_database, $staff_link);
+				$staff_dbh = new PDO("mysql:host=".$staff_hostname.";port=".$staff_port.";dbname=".$staff_database, $staff_username, $staff_password, array(
+					PDO::ATTR_PERSISTENT => true
+				));
 				
-				$query = sprintf("select STAFF_ID, Name, LastName, Room, ipAddress from staff where STAFF_ID='%s'",
-				    mysql_real_escape_string($_REQUEST["id"], $staff_link));
-				$staff_result = mysql_query($query, $staff_link);
+				$staff_stmt = $staff_dbh->prepare("select STAFF_ID, Name, LastName, Room, ipAddress from staff where STAFF_ID = ?");
+				$staff_stmt->execute(array($_REQUEST["id"]));
 				
-				$staff_row = mysql_fetch_assoc($staff_result);
+				$staff_row = $staff_stmt->fetch();
 			}
 			?>
 			<table>
@@ -56,13 +56,14 @@ require_once("config.inc.php");
 					<td>
 						<select name="Room">
 							<?php
-							$room_link = mysql_pconnect($room_hostname.":".$room_port, $room_username, $room_password);
-							mysql_select_db($room_database, $room_link);
+							$room_dbh = new PDO("mysql:host=".$room_hostname.";port=".$room_port.";dbname=".$room_database, $room_username, $room_password, array(
+								PDO::ATTR_PERSISTENT => true
+							));
 							
-							$query = "select Room from room order by Room";
-							$room_result = mysql_query($query, $room_link);
+							$room_stmt = $room_dbh->prepare("select Room from room order by Room");
+							$room_stmt->execute();
 							
-							while($room_row = mysql_fetch_assoc($room_result))
+							while($room_row = $room_stmt->fetch())
 							{
 								?>
 								<option value="<?php print($room_row["Room"]); ?>"<?php if($staff_row["Room"] == $room_row["Room"]) print(" selected"); ?>><?php print($room_row["Room"]); ?></option>

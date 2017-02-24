@@ -11,14 +11,14 @@ require_once("config.inc.php");
 	<body>
 		<?php
 		/* Query the staff member */
-		$staff_link = mysql_pconnect($staff_hostname.":".$staff_port, $staff_username, $staff_password);
-		mysql_select_db($staff_database, $staff_link);
+		$staff_dbh = new PDO("mysql:host=".$staff_hostname.";port=".$staff_port.";dbname=".$staff_database, $staff_username, $staff_password, array(
+			PDO::ATTR_PERSISTENT => true
+		));
 		
-		$query = sprintf("select STAFF_ID, Name, LastName, Room, ipAddress from staff where STAFF_ID = '%s'",
-		    mysql_real_escape_string($_REQUEST["id"], $staff_link));
-		$staff_result = mysql_query($query, $staff_link);
-
-		while($staff_row = mysql_fetch_assoc($staff_result))
+		$staff_stmt = $staff_dbh->prepare("select STAFF_ID, Name, LastName, Room, ipAddress from staff where STAFF_ID = ?");
+		$staff_stmt->execute(array($_REQUEST["id"]));
+		
+		while($staff_row = $staff_stmt->fetch())
 		{
 			?>
 			<table>
@@ -40,14 +40,14 @@ require_once("config.inc.php");
 				</tr>
 				<?php
 				/* Query the associated zipcode of the room */
-				$room_link = mysql_pconnect($room_hostname.":".$room_port, $room_username, $room_password);
-				mysql_select_db($room_database, $room_link);
+				$room_dbh = new PDO("mysql:host=".$room_hostname.";port=".$room_port.";dbname=".$room_database, $room_username, $room_password, array(
+					PDO::ATTR_PERSISTENT => true
+				));
 
-				$query = sprintf("select Zipcode from room where Room='%s'",
-				    mysql_real_escape_string($staff_row["Room"], $room_link));
-				$room_result = mysql_query($query, $room_link);
+				$room_stmt = $room_dbh->prepare("select Zipcode from room where Room = ?");
+				$room_stmt->execute(array($staff_row["Room"]));
 				
-				while($room_row = mysql_fetch_assoc($room_result))
+				while($room_row = $room_stmt->fetch())
 				{
 					?>
 					<tr>
@@ -56,14 +56,14 @@ require_once("config.inc.php");
 					</tr>
 					<?php
 					/* Query the associated street and city of the zipcode */
-					$zipcode_link = mysql_pconnect($zipcode_hostname.":".$zipcode_port, $zipcode_username, $zipcode_password);
-					mysql_select_db($zipcode_database, $zipcode_link);
+					$zipcode_dbh = new PDO("mysql:host=".$zipcode_hostname.";port=".$zipcode_port.";dbname=".$zipcode_database, $zipcode_username, $zipcode_password, array(
+						PDO::ATTR_PERSISTENT => true
+					));
 					
-					$query = sprintf("select Street, City from zipcode where Zipcode='%s'",
-					    mysql_real_escape_string($room_row["Zipcode"], $zipcode_link));
-					$zipcode_result = mysql_query($query, $zipcode_link);
-
-					while($zipcode_row = mysql_fetch_assoc($zipcode_result))
+					$zipcode_stmt = $zipcode_dbh->prepare("select Street, City from zipcode where Zipcode = ?");
+					$zipcode_stmt->execute(array($room_row["Zipcode"]));
+					
+					while($zipcode_row = $zipcode_stmt->fetch())
 					{
 						?>
 						<tr>
