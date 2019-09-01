@@ -6,12 +6,12 @@
 
 let
   pkgs = import nixpkgs {};
-  
+
   jobs = rec {
     tarball =
       let
         pkgs = import nixpkgs {};
-  
+
         disnixos = import "${pkgs.disnixos}/share/disnixos/testing.nix" {
           inherit nixpkgs;
         };
@@ -22,12 +22,12 @@ let
         src = disnix_stafftracker_php_example;
         inherit officialRelease;
       };
-      
+
     build =
       pkgs.lib.genAttrs systems (system:
         let
           pkgs = import nixpkgs { inherit system; };
-  
+
           disnixos = import "${pkgs.disnixos}/share/disnixos/testing.nix" {
             inherit nixpkgs system;
         };
@@ -41,7 +41,7 @@ let
           distributionFile = "deployment/DistributedDeployment/distribution.nix";
         }
       );
-    tests = 
+    tests =
       let
         disnixos = import "${pkgs.disnixos}/share/disnixos/testing.nix" {
           inherit nixpkgs;
@@ -57,20 +57,20 @@ let
           ''
             # Wait for a while and capture the output of the entry page
             my $result = $test3->mustSucceed("sleep 30; curl --fail http://test1/stafftracker/index.php");
-            
+
             # The entry page should contain my name :-)
-            
+
             if ($result =~ /Sander/) {
                 print "Entry page contains Sander!\n";
             }
             else {
                 die "Entry page should contain Sander!\n";
             }
-            
+
             # Start Firefox and take a screenshot
-            
+
             $test3->mustSucceed("firefox http://test1/stafftracker/index.php &");
-            $test3->waitForWindow(qr/Nightly/);
+            $test3->waitForWindow(qr/Firefox/);
             $test3->mustSucceed("sleep 30");
             $test3->screenshot("screen");
           '';
