@@ -4,25 +4,37 @@ let customPkgs = import ../top-level/all-packages.nix { inherit system pkgs; };
 in
 rec {
 ### Databases
-  
-  rooms = {
+
+  rooms = rec {
     name = "rooms";
-    pkg = customPkgs.rooms;
+    mysqlUsername = "rooms";
+    mysqlPassword = "rooms";
+    pkg = customPkgs.rooms {
+      inherit mysqlUsername mysqlPassword;
+    };
     dependsOn = {};
     type = "mysql-database";
   };
-  
-  staff = {
+
+  staff = rec {
     name = "staff";
-    pkg = customPkgs.staff;
+    mysqlUsername = "staff";
+    mysqlPassword = "staff";
+    pkg = customPkgs.staff {
+      inherit mysqlUsername mysqlPassword;
+    };
     dependsOn = {};
     type = "mysql-database";
     deployState = true;
   };
-  
-  zipcodes = {
+
+  zipcodes = rec {
     name = "zipcodes";
-    pkg = customPkgs.zipcodes;
+    mysqlUsername = "zipcodes";
+    mysqlPassword = "zipcodes";
+    pkg = customPkgs.zipcodes {
+      inherit mysqlUsername mysqlPassword;
+    };
     dependsOn = {};
     type = "mysql-database";
   };

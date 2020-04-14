@@ -12,12 +12,15 @@
 
     httpd = {
       enable = true;
-      documentRoot = "/var/www";
       adminAddr = "admin@localhost";
       enablePHP = true;
-      extraConfig = ''
-        DirectoryIndex index.php
-      '';
+
+      virtualHosts.localhost = {
+        documentRoot = "/var/www";
+        extraConfig = ''
+          DirectoryIndex index.php
+        '';
+      };
     };
   };
 
