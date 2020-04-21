@@ -6,4 +6,3 @@
   stafftracker = [ infrastructure.test1 ];
   zipcodes = [ infrastructure.test2 ];
 }
-
