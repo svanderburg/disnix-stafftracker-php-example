@@ -22,7 +22,7 @@ let
   };
 in
 rec {
-  simpleWebappApache = constructors.simpleWebappApache {
+  apache = constructors.simpleWebappApache {
     port = 80;
     serverAdmin = "root@localhost";
     enablePHP = true;

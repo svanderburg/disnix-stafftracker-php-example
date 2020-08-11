@@ -7,5 +7,5 @@ let
 in
 {
   mysql = [ infrastructure.test2 ];
-  simpleWebappApache = [ infrastructure.test1 ];
+  apache = [ infrastructure.test1 ];
 } // applicationServicesDistribution
