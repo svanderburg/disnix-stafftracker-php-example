@@ -56,23 +56,21 @@ let
         testScript =
           ''
             # Wait for a while and capture the output of the entry page
-            my $result = $test3->mustSucceed("sleep 30; curl --fail http://test1/stafftracker/index.php");
+            result = test3.succeed("sleep 30; curl --fail http://test1/stafftracker/index.php")
 
             # The entry page should contain my name :-)
 
-            if ($result =~ /Sander/) {
-                print "Entry page contains Sander!\n";
-            }
-            else {
-                die "Entry page should contain Sander!\n";
-            }
+            if "Sander" in result:
+                print("Entry page contains Sander!")
+            else:
+                raise Exception("Entry page should contain Sander!")
 
             # Start Firefox and take a screenshot
 
-            $test3->mustSucceed("firefox http://test1/stafftracker/index.php &");
-            $test3->waitForWindow(qr/Firefox/);
-            $test3->mustSucceed("sleep 30");
-            $test3->screenshot("screen");
+            test3.succeed("firefox http://test1/stafftracker/index.php &")
+            test3.wait_for_window("Firefox")
+            test3.succeed("sleep 30")
+            test3.screenshot("screen")
           '';
       };
   };
