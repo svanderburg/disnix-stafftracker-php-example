@@ -7,21 +7,18 @@
 let
   pkgs = import nixpkgs {};
 
-  jobs = rec {
-    tarball =
-      let
-        pkgs = import nixpkgs {};
+  disnixos = import "${pkgs.disnixos}/share/disnixos/testing.nix" {
+    inherit nixpkgs;
+  };
 
-        disnixos = import "${pkgs.disnixos}/share/disnixos/testing.nix" {
-          inherit nixpkgs;
-        };
-      in
-      disnixos.sourceTarball {
-        name = "disnix-stafftracker-php-example-tarball";
-        version = builtins.readFile ./version;
-        src = disnix_stafftracker_php_example;
-        inherit officialRelease;
-      };
+  version = builtins.readFile ./version;
+
+  jobs = rec {
+    tarball = disnixos.sourceTarball {
+      name = "disnix-stafftracker-php-example-tarball";
+      src = disnix_stafftracker_php_example;
+      inherit officialRelease version;
+    };
 
     build =
       pkgs.lib.genAttrs systems (system:
@@ -34,45 +31,39 @@ let
         in
         disnixos.buildManifest {
           name = "disnix-stafftracker-php-example";
-          version = builtins.readFile ./version;
-          inherit tarball;
+          inherit tarball version;
           servicesFile = "deployment/DistributedDeployment/services.nix";
           networkFile = "deployment/DistributedDeployment/network.nix";
           distributionFile = "deployment/DistributedDeployment/distribution.nix";
         }
       );
-    tests =
-      let
-        disnixos = import "${pkgs.disnixos}/share/disnixos/testing.nix" {
-          inherit nixpkgs;
-        };
-      in
-      disnixos.disnixTest {
-        name = "disnix-stafftracker-php-example-tests";
-        inherit tarball;
-        manifest = builtins.getAttr (builtins.currentSystem) build;
-        networkFile = "deployment/DistributedDeployment/network.nix";
-        dysnomiaStateDir = ./tests/state;
-        testScript =
-          ''
-            # Wait for a while and capture the output of the entry page
-            result = test3.succeed("sleep 30; curl --fail http://test1/stafftracker/index.php")
 
-            # The entry page should contain my name :-)
+    tests = disnixos.disnixTest {
+      name = "disnix-stafftracker-php-example-tests";
+      inherit tarball;
+      manifest = builtins.getAttr (builtins.currentSystem) build;
+      networkFile = "deployment/DistributedDeployment/network.nix";
+      dysnomiaStateDir = ./tests/state;
+      testScript =
+        ''
+          # Wait for a while and capture the output of the entry page
+          result = test3.succeed("sleep 30; curl --fail http://test1/stafftracker/index.php")
 
-            if "Sander" in result:
-                print("Entry page contains Sander!")
-            else:
-                raise Exception("Entry page should contain Sander!")
+          # The entry page should contain my name :-)
 
-            # Start Firefox and take a screenshot
+          if "Sander" in result:
+              print("Entry page contains Sander!")
+          else:
+              raise Exception("Entry page should contain Sander!")
 
-            test3.succeed("firefox http://test1/stafftracker/index.php &")
-            test3.wait_for_window("Firefox")
-            test3.succeed("sleep 30")
-            test3.screenshot("screen")
-          '';
-      };
+          # Start Firefox and take a screenshot
+
+          test3.succeed("firefox http://test1/stafftracker/index.php &")
+          test3.wait_for_window("Firefox")
+          test3.succeed("sleep 30")
+          test3.screenshot("screen")
+        '';
+    };
   };
 in
 jobs
