@@ -24,8 +24,8 @@ rec {
       inherit mysqlUsername mysqlPassword;
     };
     dependsOn = {};
+    deployState = true; # Migrate state as well
     type = "mysql-database";
-    deployState = true;
   };
 
   zipcodes = rec {

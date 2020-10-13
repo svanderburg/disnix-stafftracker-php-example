@@ -21,7 +21,6 @@
       mysql-database = {
         mysqlPort = 3307;
         mysqlUsername = "root";
-        mysqlPassword = builtins.readFile ../configurations/mysqlpw;
       };
     };
   };
