@@ -27,7 +27,7 @@ rec {
     port = 80;
     serverAdmin = "root@localhost";
     enablePHP = true;
-    documentRoot = "/var/www";
+    documentRoot = "${stateDir}/www";
     type = processType;
   };
 
