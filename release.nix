@@ -1,6 +1,7 @@
 { nixpkgs ? <nixpkgs>
 , disnix_stafftracker_php_example ? { outPath = ./.; rev = 1234; }
 , nix-processmgmt ? { outPath = ../nix-processmgmt; rev = 1234; }
+, nix-processmgmt-services ? { outPath = ../nix-processmgmt-services; rev = 1234; }
 , officialRelease ? false
 , systems ? [ "i686-linux" "x86_64-linux" ]
 }:
@@ -54,7 +55,7 @@ let
           networkFile = "deployment/DistributedDeployment/network-bare.nix";
           distributionFile = "deployment/DistributedDeployment/distribution-with-containers.nix";
           extraParams = {
-            inherit nix-processmgmt;
+            inherit nix-processmgmt nix-processmgmt-services;
           };
         }
       );
