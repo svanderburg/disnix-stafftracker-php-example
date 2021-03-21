@@ -3,6 +3,8 @@
 , runtimeDir ? "${stateDir}/run"
 , logDir ? "${stateDir}/log"
 , cacheDir ? "${stateDir}/cache"
+, spoolDir ? "${spoolDir}/spool"
+, libDir ? "${libDir}/lib"
 , tmpDir ? (if stateDir == "/var" then "/tmp" else "${stateDir}/tmp")
 , forceDisableUserChange ? false
 , processManager ? "systemd"
@@ -12,7 +14,7 @@
 
 let
   constructors = import "${nix-processmgmt-services}/service-containers-agnostic/constructors.nix" {
-    inherit nix-processmgmt pkgs stateDir runtimeDir logDir cacheDir tmpDir forceDisableUserChange processManager;
+    inherit nix-processmgmt pkgs stateDir runtimeDir logDir cacheDir spoolDir libDir tmpDir forceDisableUserChange processManager;
   };
 
   applicationServices = import ./services.nix {
