@@ -84,7 +84,7 @@ let
 
               # Start Firefox and take a screenshot
 
-              test3.succeed("firefox http://test1/stafftracker/index.php &")
+              test3.succeed("xterm -e 'firefox http://test1/stafftracker/index.php' >&2 &")
               test3.wait_for_window("Firefox")
               test3.succeed("sleep 30")
               test3.screenshot("screen")
